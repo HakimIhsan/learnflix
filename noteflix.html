@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroLearn</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #FFFFFF;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: linear-gradient(to right, #141414, #1C1C1C);
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF3B30;
+        }
+
+        .nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav a {
+            font-size: 1rem;
+            color: #FFFFFF;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #FF3B30;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 16px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 8px;
+            }
+
+            .nav a {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Grid Container */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
+            padding: 32px;
+        }
+
+        .cover {
+            background: #1C1C1C;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .cover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .cover img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .cover-title {
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .cover-title {
+                font-size: 1rem;
+                padding: 12px;
+            }
+
+            .cover img {
+                height: 150px;
+            }
+        }
+
+        /* Slideshow */
+        .slideshow {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+        }
+
+        .slides {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+        }
+
+        .slide {
+            flex: 0 0 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px;
+            color: #FFFFFF;
+            scroll-snap-align: start;
+            background: #121212;
+        }
+
+        .slide:nth-child(odd) {
+            background: #1C1C1C;
+        }
+
+        .slide h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 12px 20px;
+            background-color: #FF3B30;
+            color: #FFFFFF;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: #FF5E57;
+        }
+
+        /* Smooth Scrolling */
+        .slides::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slides {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media (max-width: 768px) {
+            .slide h2 {
+                font-size: 1.5rem;
+            }
+
+            .slide p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">MicroLearn</div>
+        <div class="nav">
+            <a href="#">Home</a>
+            <a href="#">Categories</a>
+            <a href="#">Profile</a>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="cover" onclick="openSlideshow('html')">
+            <img src="https://via.placeholder.com/250x200" alt="Microlearning 1">
+            <div class="cover-title">Cara Melawan Overthinking.</div>
+        </div>
+        <div class="cover" onclick="openSlideshow('css')">
+            <img src="https://via.placeholder.com/250x200" alt="Microlearning 2">
+            <div class="cover-title">Ketakutan Bukan Musuhmu!</div>
+        </div>
+        <div class="cover" onclick="openSlideshow('js')">
+            <img src="https://via.placeholder.com/250x200" alt="Microlearning 3">
+            <div class="cover-title">Ketika Kamu Merasa Nggak Cukup-</div>
+        </div>
+    </div>
+
+    <div class="slideshow" id="slideshow">
+        <button class="close-btn" onclick="closeSlideshow()">Close</button>
+        <div class="slides" id="slides"></div>
+    </div>
+
+    <script>
+        const content = {
+            
+html: [
+    { 
+        title: '-', 
+        text: 'Apapun yg overthinking bilang, kamu harus bantah.'
+    },
+    { 
+        title: '-', 
+        text: 'Misal, overthinking bilang, <br> "Gimana kalau ternyata kalau gagal lagi?"<br><br>Kamu harus bantah, <br> "Gimana kalau kali ini berhasil?"'
+    },
+    { 
+        title: '-', 
+        text: 'Kalau overthinking ngotot,<br>kamu lebih ngotot.<br><br>Misal, overthinking bilang, "Gimana kalau ternyata emang gagal?"<br><br>Kamu harus tetep car bantahan!'
+    },
+    { 
+        title: '-', 
+        text: 'Bilang ke overthingking,<br><br>"Ya udah, kalau gagal, emang kenapa? Gimana kalau ternyata kegagalan kali ini memberi pelajaran besar sehingga aku bisa mendapat kemenangan sesungguhnya?"'
+    },
+    { 
+        title: 'HTML Links', 
+        text: 'HTML links, created using the <a> tag, are one of the most important features of the web. Links provide navigation between different web pages, enabling users to explore content and access information across the internet. The <a> tag is defined with an "href" attribute, which specifies the target URL. Links can point to external websites, internal pages within the same website, or even specific sections within the same page using anchor links. Links are not limited to text; they can also be applied to images or buttons, creating interactive elements.'
+    },
+    { 
+        title: '-', 
+        text: 'Kalau overthingking nggak mau kalah, kamu lebih jangan mau kalah.<br><br>"Tapi kan rugi kalau gagal? sia-sia dog usahanya?, malu dong sama orang."<br><br>Kamu ragukan overthinking kamu:'
+    },
+    { 
+        title: '-', 
+        text: 'Lebih sia-sia mana:<br>Aku gagal atau aku nggak nyoba sama sekali?<br><br>Mana yg lebih mendekatkan aku dg keberhasilan:<br>Menghabiskan stok gagal atau nggak nyoba sama sekali?<br><br>Whatever you say, I will keep on fighting on my dreams.'
+    }
+    ,
+    { 
+        title: '-', 
+        text: 'Selama ini.<br>overthinkingsudah meragukanmu, sekarang waktunya kamu meragukan overthinkingmu.'
+    }
+],
+css: [
+    { 
+        title: '-', 
+        text: 'Ketakutan bukan musuhmu. Ia adalah sinyal bahwa ada sesuatu yang berharga sedang kamu perjuangkan.'
+    },
+    { 
+        title: '-', 
+        text: 'Kalau kamu takut gagal, coba pikirkan ini:<br><br>Apa yang lebih menyeramkan?<br>Tidak pernah mencoba dan terus bertanya-tanya, atau mencoba dan tahu hasilnya?'
+    },
+    { 
+        title: '-', 
+        text: 'Rasa ragu memang tidak akan hilang begitu saja.<br><br>Namun, kamu bisa menjadikannya sekutu:<br>"Kalau aku takut, berarti ini penting bagiku."'
+    },
+    { 
+        title: '-', 
+        text: 'Kegagalan adalah guru yang diam-diam mendidikmu.<br><br>Ia mengajarkan hal yang sukses sering lupa: <br>"Bagaimana cara menjadi lebih kuat."'
+    },
+    { 
+        title: '-', 
+        text: 'Jadi, lain kali kamu merasa takut gagal,<br>ucapkan ini:<br><br>"Aku takut, tapi aku tetap melangkah. Karena aku tahu, rasa takut ini adalah tanda aku bergerak ke arah yang benar."'
+    },
+    { 
+        title: '-', 
+        text: 'Apa pun yang terjadi, ingat:<br><br>Hidupmu bukan soal tidak pernah gagal,<br>tapi soal terus maju meski pernah gagal.'
+    },
+    { 
+        title: '-', 
+        text: 'Kamu tidak harus tahu semua jawabannya hari ini.<br><br>Kamu hanya perlu satu hal: <br>Keberanian untuk mengambil langkah pertama.'
+    }
+],
+js: [
+    {
+        "title": "Ketika Kamu Merasa Nggak Cukup",
+        "text": "Kadang kamu merasa nggak cukup baik. Aku tahu rasanya.<br><br>Tapi, dengar ini: kamu itu lebih kuat dari apa yang kamu pikirkan."
+    },
+    {
+        "title": "Rasa Takut Itu Hanya Ilusi",
+        "text": "Waktu kamu bilang, \"Aku takut gagal,\"<br>sebenarnya itu overthinking kamu yang berbicara.<br><br>Dan overthinking itu bohong."
+    },
+    {
+        "title": "Gagal Itu Bagian Dari Proses",
+        "text": "Coba pikirin ini: Gagal itu bukan akhir, tapi proses.<br>Kalau kamu gagal, itu berarti kamu lagi belajar.<br><br>Dan bukannya belajar itu yang bikin kita tumbuh?"
+    },
+    {
+        "title": "Kamu Berharga Meski Awal Kecil",
+        "text": "Kalau kamu merasa kecil, ingat ini:<br><br>Pohon besar juga awalnya cuma benih kecil.<br>Jadi, nggak apa-apa kalau kamu mulai dari kecil. Asal kamu tetap tumbuh."
+    },
+    {
+        "title": "Hidupmu Sama Indahnya Dengan Langit Senja",
+        "text": "Kamu pernah nggak lihat matahari terbenam? <br><br>Itu indah banget, tapi untuk jadi indah, langit harus melewati kegelapan dulu. Sama seperti hidupmu."
+    },
+    {
+        "title": "Kamu Tidak Perlu Sempurna",
+        "text": "Kamu nggak harus sempurna buat dicintai.<br><br>Kalau ada orang yang bikin kamu merasa nggak cukup baik, itu bukan tentang kamu. Itu tentang mereka."
+    },
+    {
+        "title": "Percaya Diri Adalah Langkah Awal",
+        "text": "Jadi, mulai sekarang, coba lebih percaya diri sama diri sendiri.<br><br>Kamu layak untuk bermimpi besar.<br>Kamu layak untuk bahagia.<br>Kamu layak untuk sukses."
+    },
+    {
+        "title": "Ingat: Kamu Sedang Berproses",
+        "text": "Dan kalau kamu merasa ragu, ingat ini:<br><br>Kamu bukan gagal.<br>Kamu hanya sedang berproses menjadi versi terbaik dirimu."
+    }
+]
+        };
+
+        function openSlideshow(topic) {
+            const slidesContainer = document.getElementById('slides');
+            const slides = content[topic];
+            slidesContainer.innerHTML = slides.map((slide) => `
+                <div class="slide">
+                    <h2>${slide.title}</h2>
+                    <p>${slide.text}</p>
+                </div>
+            `).join('');
+            document.getElementById('slideshow').style.display = 'block';
+        }
+
+        function closeSlideshow() {
+            document.getElementById('slideshow').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
